@@ -1,25 +1,25 @@
 package cz.devconf;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public final class Converter {
 
-    private final JSONObject root;
-    private final List<JSONObject> sessions;
-
     private enum Headers {
         TYPE, TITLE, ID, SPEAKERS, TRACK, ROOM, DAY,
-        START, END, DURATION, SESSION_DURATION, QA, BREAK,
+        START, END, DURATION, SESSION, QA, BREAK,
         NOTES, STATUS, DESCRIPTION, HOTEL;
 
         public String nodeName() {
@@ -27,19 +27,17 @@ public final class Converter {
         }
     }
 
-    public Converter() {
-        root = new JSONObject();
-
-        sessions = new ArrayList<JSONObject>();
-    }
+    // Reader ---------------------------------------------------------------------------------------------------------
 
     /**
-     * Cache all sessions in memory
+     * Read all sessions from CSV and create JSONObject with that
      *
      * @param fileName CVS filename
      * @return Converter instance
      */
-    public Converter readCSVFrom(String fileName) throws IOException {
+    public JSONConverter readCSVFrom(String fileName) throws IOException {
+        List<JSONObject> sessions = new ArrayList<JSONObject>();
+
         Reader in = new FileReader(fileName);
 
         Iterable<CSVRecord> records = CSVFormat.RFC4180
@@ -50,80 +48,293 @@ public final class Converter {
             JSONObject session = new JSONObject();
 
             for (Headers header : Headers.values()) {
-                session.put(header.nodeName(), record.get(header));
+                if (header.equals(Headers.SPEAKERS)) {
+                    JSONArray speakers = new JSONArray();
+
+                    String[] speakersEmail = record.get(header).split(";");
+                    for (String speakerEmail : speakersEmail) {
+                        JSONObject speaker = new JSONObject();
+                        speaker.put("email", speakerEmail);
+
+                        speakers.add(speaker);
+                    }
+
+                    session.put(header.nodeName(), speakers);
+                } else {
+                    session.put(header.nodeName(), record.get(header));
+                }
             }
 
             sessions.add(session);
         }
 
-        return this;
+        in.close();
+
+        return new JSONConverterImpl(sessions);
+    }
+
+    // JSON Converter -------------------------------------------------------------------------------------------------
+
+    /**
+     * Responsable to structure the JSON nodes
+     */
+    public interface JSONConverter {
+        public JSONWriter createJSON();
     }
 
     /**
-     * Write a JSON file with sessions
-     *
-     * @param fileName JSON file with sessions
+     * Helper to structures the JSON nodes in differents ways
      */
-    public void writeIn(String fileName) throws IOException {
-        FileWriter fileWriter = new FileWriter(fileName);
-        fileWriter.write(root.toJSONString());
+    private interface JSONCreator {
+        public void add(JSONObject object);
+
+        public JSONObject createNode();
     }
 
     /**
-     * Create a sessions entry in the JSON file
-     *
-     * @return Converter instance
-     * @throws IOException
+     * Create sessions
+     * <p>
+     * <pre>
+     * {
+     *    "sessions": {
+     *       "201": {
+     *          "id": "201",
+     *          "title": "My code will change the world",
+     *          "day": "1",
+     *          "start": "10:30:00 AM",
+     *          "room": "vikings"
+     *       },
+     *       "202": {
+     *          "id": "202",
+     *          "title": "Listen music when code make every developer more productive",
+     *          "day": "1",
+     *          "start": "10:30:00 AM",
+     *          "room": "spartacus"
+     *       }
+     *    }
+     * }
+     * </pre>
      */
-    public Converter createAllSessionsJSON() throws IOException {
+    private class AllSessionsJSONCreator implements JSONCreator {
+
         JSONObject sessions = new JSONObject();
 
-        for (JSONObject session : this.sessions) {
+        public void add(JSONObject session) {
             sessions.put(session.get(Headers.ID.nodeName()), session);
         }
 
-        root.put("sessions", sessions);
+        public JSONObject createNode() {
+            return sessions;
+        }
 
-        return this;
     }
 
-    public Converter createSessionsByDayJSON() throws IOException {
+    /**
+     * Create sessions grouped by day
+     * <p>
+     * <pre>
+     * {
+     *    "sessions": {
+     *       "1": {
+     *          "201": {
+     *             "id": "201",
+     *             "title": "My code will change the world",
+     *             "day": "1",
+     *             "start": "10:30:00 AM",
+     *             "room": "vikings"
+     *          },
+     *          "202": {
+     *             "id": "202",
+     *             "title": "Listen music when code make every developer more productive",
+     *             "day": "1",
+     *             "start": "10:30:00 AM",
+     *             "room": "spartacus"
+     *          }
+     *       }
+     *    }
+     * }
+     * </pre>
+     */
+    private class SessionsByDayJSONCreator implements JSONCreator {
 
-        JSONObject sessionsByDay = new JSONObject();
+        JSONObject sessions = new JSONObject();
 
-        HashMap<String, List<JSONObject>> daysHelper = new HashMap<String, List<JSONObject>>();
+        Map<String, List<JSONObject>> daysHelper = new HashMap<String, List<JSONObject>>();
 
-        // Group by day
-        for (JSONObject session : this.sessions) {
+        public void add(JSONObject session) {
             if (!daysHelper.containsKey(session.get(Headers.DAY.nodeName()))) {
                 daysHelper.put(session.get(Headers.DAY.nodeName()).toString(), new ArrayList<JSONObject>());
             }
             daysHelper.get(session.get(Headers.DAY.nodeName())).add(session);
         }
 
-        // Create JSON nodes by day
-        for (Object key : daysHelper.keySet()) {
-            JSONObject day = new JSONObject();
+        public JSONObject createNode() {
+            for (Object key : daysHelper.keySet()) {
+                JSONObject day = new JSONObject();
 
-            for (Object value : daysHelper.get(key)) {
-                JSONObject session = (JSONObject) value;
-                day.put(session.get(Headers.ID.nodeName()), session);
+                for (Object value : daysHelper.get(key)) {
+                    JSONObject session = (JSONObject) value;
+                    day.put(session.get(Headers.ID.nodeName()), session);
+                }
+
+                sessions.put(key, day);
             }
 
-            sessionsByDay.put(key, day);
+            return sessions;
         }
 
-        root.put("sessions_by_day", sessionsByDay);
+    }
 
-        return this;
+    /**
+     * Create sessions grouped by day and hour
+     * <p>
+     * <pre>
+     * {
+     *    "sessions": {
+     *       "1": {
+     *          "10:30:00 AM": {
+     *             "201": {
+     *                "id": "201",
+     *                "title": "My code will change the world",
+     *                "day": "1",
+     *                "start": "10:30:00 AM",
+     *                "room": "vikings"
+     *             },
+     *             "202": {
+     *                "id": "202",
+     *                "title": "Listen music when code make every developer more productive",
+     *                "day": "1",
+     *                "start": "10:30:00 AM",
+     *                "room": "spartacus"
+     *             }
+     *          }
+     *       }
+     *    }
+     * }
+     * </pre>
+     */
+    private class SessionsByDayHourJSONCreator implements JSONCreator {
+
+        JSONObject sessions = new JSONObject();
+
+        Map<String, Map<String, List<JSONObject>>> dayHoursHelper = new HashMap<String, Map<String, List<JSONObject>>>();
+
+        public void add(JSONObject session) {
+            if (!dayHoursHelper.containsKey(session.get(Headers.DAY.nodeName()))) {
+                dayHoursHelper.put(session.get(Headers.DAY.nodeName()).toString(),
+                        new HashMap<String, List<JSONObject>>());
+            }
+
+            Map<String, List<JSONObject>> day = dayHoursHelper.get(session.get(Headers.DAY.nodeName()));
+            if (!day.containsKey(session.get(Headers.START.nodeName()))) {
+                day.put(session.get(Headers.START.nodeName()).toString(), new ArrayList<JSONObject>());
+            }
+            day.get(session.get(Headers.START.nodeName())).add(session);
+        }
+
+        public JSONObject createNode() {
+            for (Object keyDay : dayHoursHelper.keySet()) {
+                JSONObject day = new JSONObject();
+
+                Map<String, List<JSONObject>> hours = dayHoursHelper.get(keyDay);
+
+                for (Object keyHour : hours.keySet()) {
+                    JSONObject hour = new JSONObject();
+
+                    for (Object value : hours.get(keyHour)) {
+                        JSONObject session = (JSONObject) value;
+
+                        hour.put(session.get(Headers.ID.nodeName()), session);
+                    }
+
+                    day.put(keyHour, hour);
+                }
+
+                sessions.put(keyDay, day);
+            }
+
+            return sessions;
+        }
 
     }
 
-    public Converter createSessionsByDayAndHoursJSON() throws IOException {
+    /**
+     * See {@link JSONConverter}
+     */
+    private final class JSONConverterImpl implements JSONConverter {
 
-        return null;
+        private List<JSONObject> sessions;
+        private JSONObject root = new JSONObject();
+
+        public JSONConverterImpl(List<JSONObject> sessions) {
+            this.sessions = sessions;
+        }
+
+        /**
+         * Create a sessions entry grouped by day in the JSON file
+         *
+         * @return Converter instance
+         */
+        public JSONWriter createJSON() {
+            JSONCreator allSessions = new AllSessionsJSONCreator();
+            JSONCreator sessionsByDay = new SessionsByDayJSONCreator();
+            JSONCreator sessionsByDayHour = new SessionsByDayHourJSONCreator();
+
+            for (JSONObject session : this.sessions) {
+                allSessions.add(session);
+                sessionsByDay.add(session);
+                sessionsByDayHour.add(session);
+            }
+
+            root.put("sessions", allSessions.createNode());
+            root.put("sessions_by_day", sessionsByDay.createNode());
+            root.put("sessions_by_day_hour", sessionsByDayHour.createNode());
+
+            return new JSONWriterImpl(root);
+        }
 
     }
 
+    // Writter --------------------------------------------------------------------------------------------------------
+
+    public interface JSONWriter {
+        void writeIn(String fileName) throws IOException;
+    }
+
+    private final class JSONWriterImpl implements JSONWriter {
+
+        private JSONObject data;
+
+        public JSONWriterImpl(JSONObject data) {
+            this.data = data;
+        }
+
+        /**
+         * Write a JSON file with sessions
+         *
+         * @param fileName JSON file with sessions
+         */
+        public void writeIn(String fileName) throws IOException {
+            String prettyJsonString = formatterJSON();
+
+            FileWriter fileWriter = new FileWriter(fileName);
+            fileWriter.write(prettyJsonString);
+
+            fileWriter.close();
+        }
+
+        /**
+         * Formatter JSON string
+         *
+         * @return Formmated JSON String
+         */
+        private String formatterJSON() {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonParser jsonParser = new JsonParser();
+            JsonElement je = jsonParser.parse(data.toJSONString());
+            return gson.toJson(je);
+        }
+
+    }
 
 }
