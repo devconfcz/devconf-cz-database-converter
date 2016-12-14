@@ -8,9 +8,15 @@ public class App {
 
         SessionConverter sessionConverter = new SessionConverter();
         sessionConverter
-                .readCSVFrom("/Users/passos/Downloads/devconf.csv")
+                .readCSVFrom("/Users/passos/Downloads/sessions.csv")
                 .createJSON()
                 .writeIn("/Users/passos/Desktop/sessions.json");
+
+        SpeakerConverter speakerConverter = new SpeakerConverter();
+        speakerConverter
+                .readCSVFrom("/Users/passos/Downloads/speakers.csv")
+                .createJSON()
+                .writeIn("/Users/passos/Desktop/speakers.json");
 
     }
 

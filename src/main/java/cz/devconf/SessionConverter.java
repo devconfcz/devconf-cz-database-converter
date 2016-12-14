@@ -72,6 +72,17 @@ public final class SessionConverter extends BaseConverter {
     // JSON SessionConverter -------------------------------------------------------------------------------------------------
 
     /**
+     * Helper to structures the JSON nodes in differents ways
+     */
+    private interface JSONCreator {
+
+        void add(JSONObject object);
+
+        JSONObject createNode();
+
+    }
+
+    /**
      * Create sessions
      * <p>
      * <pre>
@@ -271,32 +282,6 @@ public final class SessionConverter extends BaseConverter {
             root.put("sessions_by_day_hour", sessionsByDayHour.createNode());
 
             return new JSONWriterImpl(root);
-        }
-
-    }
-
-    // Writter --------------------------------------------------------------------------------------------------------
-
-    private final class JSONWriterImpl implements JSONWriter {
-
-        private JSONObject data;
-
-        public JSONWriterImpl(JSONObject data) {
-            this.data = data;
-        }
-
-        /**
-         * Write a JSON file with sessions
-         *
-         * @param fileName JSON file with sessions
-         */
-        public void writeIn(String fileName) throws IOException {
-            String prettyJsonString = formatterJSON(data);
-
-            FileWriter fileWriter = new FileWriter(fileName);
-            fileWriter.write(prettyJsonString);
-
-            fileWriter.close();
         }
 
     }
