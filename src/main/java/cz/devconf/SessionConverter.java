@@ -1,9 +1,5 @@
 package cz.devconf;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.json.simple.JSONArray;
@@ -15,7 +11,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
 
-public final class Converter {
+public final class SessionConverter extends BaseConverter {
 
     private enum Headers {
         TYPE, TITLE, ID, SPEAKERS, TRACK, ROOM, DAY,
@@ -33,7 +29,7 @@ public final class Converter {
      * Read all sessions from CSV and create JSONObject with that
      *
      * @param fileName CVS filename
-     * @return Converter instance
+     * @return SessionConverter instance
      */
     public JSONConverter readCSVFrom(String fileName) throws IOException {
         List<JSONObject> sessions = new ArrayList<JSONObject>();
@@ -73,23 +69,7 @@ public final class Converter {
         return new JSONConverterImpl(sessions);
     }
 
-    // JSON Converter -------------------------------------------------------------------------------------------------
-
-    /**
-     * Responsable to structure the JSON nodes
-     */
-    public interface JSONConverter {
-        public JSONWriter createJSON();
-    }
-
-    /**
-     * Helper to structures the JSON nodes in differents ways
-     */
-    private interface JSONCreator {
-        public void add(JSONObject object);
-
-        public JSONObject createNode();
-    }
+    // JSON SessionConverter -------------------------------------------------------------------------------------------------
 
     /**
      * Create sessions
@@ -273,7 +253,7 @@ public final class Converter {
         /**
          * Create a sessions entry grouped by day in the JSON file
          *
-         * @return Converter instance
+         * @return SessionConverter instance
          */
         public JSONWriter createJSON() {
             JSONCreator allSessions = new AllSessionsJSONCreator();
@@ -297,10 +277,6 @@ public final class Converter {
 
     // Writter --------------------------------------------------------------------------------------------------------
 
-    public interface JSONWriter {
-        void writeIn(String fileName) throws IOException;
-    }
-
     private final class JSONWriterImpl implements JSONWriter {
 
         private JSONObject data;
@@ -315,24 +291,12 @@ public final class Converter {
          * @param fileName JSON file with sessions
          */
         public void writeIn(String fileName) throws IOException {
-            String prettyJsonString = formatterJSON();
+            String prettyJsonString = formatterJSON(data);
 
             FileWriter fileWriter = new FileWriter(fileName);
             fileWriter.write(prettyJsonString);
 
             fileWriter.close();
-        }
-
-        /**
-         * Formatter JSON string
-         *
-         * @return Formmated JSON String
-         */
-        private String formatterJSON() {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonParser jsonParser = new JsonParser();
-            JsonElement je = jsonParser.parse(data.toJSONString());
-            return gson.toJson(je);
         }
 
     }
