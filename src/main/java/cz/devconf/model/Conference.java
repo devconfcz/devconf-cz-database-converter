@@ -7,7 +7,6 @@ public class Conference {
     private Map<String, String> admins;
     private Map<String, Speaker> speakers;
     private Map<String, Session> sessions;
-    private Map<String, Map<String, String>> sessionSpeakers;
 
     public Map<String, String> getAdmins() {
         return admins;
@@ -33,11 +32,4 @@ public class Conference {
         this.sessions = sessions;
     }
 
-    public Map<String, Map<String, String>> getSessionSpeakers() {
-        return sessionSpeakers;
-    }
-
-    public void setSessionSpeakers(Map<String, Map<String, String>> sessionSpeakers) {
-        this.sessionSpeakers = sessionSpeakers;
-    }
 }

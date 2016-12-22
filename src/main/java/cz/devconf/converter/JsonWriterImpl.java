@@ -15,13 +15,10 @@ public class JsonWriterImpl implements JsonWriter {
 
     private Map<String, Speaker> speakers;
     private Map<String, Session> sessions;
-    private Map<String, Map<String, String>> sessionSpeakers;
 
-    public JsonWriterImpl(Map<String, Speaker> speakers, Map<String, Session> sessions,
-                          Map<String, Map<String, String>> sessionSpeakers) {
+    public JsonWriterImpl(Map<String, Speaker> speakers, Map<String, Session> sessions) {
         this.speakers = speakers;
         this.sessions = sessions;
-        this.sessionSpeakers = sessionSpeakers;
     }
 
     public void convertAndWriteIn(String fileName) throws IOException {
@@ -33,7 +30,6 @@ public class JsonWriterImpl implements JsonWriter {
         conference.setAdmins(admins);
         conference.setSpeakers(speakers);
         conference.setSessions(sessions);
-        conference.setSessionSpeakers(sessionSpeakers);
 
         Writer writer = new FileWriter(fileName);
         new GsonBuilder().setPrettyPrinting().create().toJson(conference, writer);

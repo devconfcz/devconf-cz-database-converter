@@ -1,5 +1,8 @@
 package cz.devconf.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Session {
 
     private String id;
@@ -8,11 +11,11 @@ public class Session {
     private String track;
     private String difficulty;
     private String description;
-    private String speakers;
     private String room;
     private String day;
     private String start;
     private String duration;
+    private List<String> speakers = new ArrayList<String>();
 
     public String getId() {
         return id;
@@ -62,14 +65,6 @@ public class Session {
         this.description = description;
     }
 
-    public String getSpeakers() {
-        return speakers;
-    }
-
-    public void setSpeakers(String speakers) {
-        this.speakers = speakers;
-    }
-
     public String getRoom() {
         return room;
     }
@@ -101,4 +96,13 @@ public class Session {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
+    public List<String> getSpeakers() {
+        return speakers;
+    }
+
+    public void setSpeakers(List<String> speakers) {
+        this.speakers = speakers;
+    }
+
 }
