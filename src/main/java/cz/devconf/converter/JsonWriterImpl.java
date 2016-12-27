@@ -58,27 +58,29 @@ public class JsonWriterImpl implements JsonWriter {
     private List<Track> tracks() {
         List<Track> tracks = new ArrayList<Track>();
 
-        tracks.add(new Track("Security", "#00b0ff"));
-        tracks.add(new Track("JUDCon", "#00e5ff"));
-        tracks.add(new Track("DevTools", "#1de9b6"));
-        tracks.add(new Track("DevOps", "#01579b"));
-        tracks.add(new Track("Testing", "#006064"));
-        tracks.add(new Track("Linux", "#009688"));
-        tracks.add(new Track("Cloud", "#448aff"));
-        tracks.add(new Track("Containers", "#5e35b1"));
-        tracks.add(new Track("Fedora", "#b71c1c"));
-        tracks.add(new Track("Desktop", "#ec407a"));
-        tracks.add(new Track("Config Mgmt", "#1de9b6"));
-        tracks.add(new Track("OpenShift", "#2e7d32"));
-        tracks.add(new Track("Agile", "#00c853"));
-        tracks.add(new Track("Microservices", "#f57f17"));
-        tracks.add(new Track("Storage", "#6d4c41"));
-        tracks.add(new Track("Networking", "#ff9e80"));
+        tracks.add(new Track("Keynote", "#000000"));
+        tracks.add(new Track("Lightning", "#000000"));
         tracks.add(new Track(".Net", "#37474f"));
-        tracks.add(new Track("OpenStack", "#757575"));
-        tracks.add(new Track("Virtualization", "#01579b"));
+        tracks.add(new Track("Agile", "#00c853"));
+        tracks.add(new Track("Cloud", "#448aff"));
+        tracks.add(new Track("Config Mgmt", "#1de9b6"));
+        tracks.add(new Track("Containers", "#5e35b1"));
+        tracks.add(new Track("Desktop", "#ec407a"));
+        tracks.add(new Track("DevOps", "#01579b"));
+        tracks.add(new Track("DevTools", "#1de9b6"));
+        tracks.add(new Track("Fedora", "#b71c1c"));
         tracks.add(new Track("Hackfest", "#b3e5fc"));
+        tracks.add(new Track("JUDCon", "#00e5ff"));
+        tracks.add(new Track("Linux", "#009688"));
         tracks.add(new Track("Meetup", "#1e88e5"));
+        tracks.add(new Track("Microservices", "#f57f17"));
+        tracks.add(new Track("Networking", "#ff9e80"));
+        tracks.add(new Track("OpenShift", "#2e7d32"));
+        tracks.add(new Track("OpenStack", "#757575"));
+        tracks.add(new Track("Security", "#00b0ff"));
+        tracks.add(new Track("Storage", "#6d4c41"));
+        tracks.add(new Track("Testing", "#006064"));
+        tracks.add(new Track("Virtualization", "#01579b"));
 
         return tracks;
     }
