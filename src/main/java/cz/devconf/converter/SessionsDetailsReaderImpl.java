@@ -43,8 +43,6 @@ public class SessionsDetailsReaderImpl implements SessionsDetailsReader {
 
             Session session = sessions.get(record.get(3));
 
-            session.setTitle(record.get(4));
-            session.setTrack(record.get(0));
             session.setDifficulty(record.get(7));
             session.setDescription(record.get(9));
 

@@ -54,8 +54,10 @@ public class SessionsReaderImpl implements SessionsReader {
 
             session.setId(record.get(2));
             session.setType(record.get(0));
+            session.setTrack(record.get(7));
             session.setRoom(record.get(8));
             session.setDay(record.get(9));
+            session.setTitle(record.get(1));
             session.setStart(dateFormatter(record.get(10)));
             session.setDuration(record.get(12));
 
