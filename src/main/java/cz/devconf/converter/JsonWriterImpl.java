@@ -51,6 +51,7 @@ public class JsonWriterImpl implements JsonWriter {
         rooms.add(new Room("E105"));
         rooms.add(new Room("E112"));
         rooms.add(new Room("G202"));
+        rooms.add(new Room("E104"));
 
         return rooms;
     }
@@ -72,7 +73,7 @@ public class JsonWriterImpl implements JsonWriter {
         tracks.add(new Track("Hackfest", "#b3e5fc"));
         tracks.add(new Track("JUDCon", "#00afc3"));
         tracks.add(new Track("Linux", "#009688"));
-        tracks.add(new Track("Meetup", "#1e88e5"));
+        tracks.add(new Track("Meetup", "#d57800"));
         tracks.add(new Track("Microservices", "#f57f17"));
         tracks.add(new Track("Networking", "#ea7d5b"));
         tracks.add(new Track("OpenShift", "#2e7d32"));
