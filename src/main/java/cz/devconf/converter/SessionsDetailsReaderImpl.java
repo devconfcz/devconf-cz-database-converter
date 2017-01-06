@@ -43,6 +43,11 @@ public class SessionsDetailsReaderImpl implements SessionsDetailsReader {
 
             Session session = sessions.get(record.get(3));
 
+            if(session == null) {
+                System.out.println("Session accepted but not found on schedule: " + record.get(3));
+                continue;
+            }
+
             session.setDifficulty(record.get(7));
             session.setDescription(record.get(9));
 
