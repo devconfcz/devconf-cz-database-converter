@@ -75,7 +75,7 @@ public class JsonWriterImpl implements JsonWriter {
         tracks.add(new Track("Linux", "#009688"));
         tracks.add(new Track("Meetup", "#d57800"));
         tracks.add(new Track("Microservices", "#f57f17"));
-        tracks.add(new Track("Networking", "#ea7d5b"));
+        tracks.add(new Track("Networking", "#b52b00"));
         tracks.add(new Track("OpenShift", "#2e7d32"));
         tracks.add(new Track("OpenStack", "#757575"));
         tracks.add(new Track("Security", "#008ccb"));
