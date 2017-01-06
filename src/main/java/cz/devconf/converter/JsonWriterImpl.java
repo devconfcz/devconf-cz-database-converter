@@ -48,12 +48,10 @@ public class JsonWriterImpl implements JsonWriter {
         rooms.add(new Room("D205"));
         rooms.add(new Room("D206"));
         rooms.add(new Room("C228"));
-        rooms.add(new Room("C236"));
         rooms.add(new Room("E104"));
         rooms.add(new Room("E105"));
         rooms.add(new Room("E112"));
         rooms.add(new Room("G202"));
-        rooms.add(new Room("E104"));
 
         return rooms;
     }
