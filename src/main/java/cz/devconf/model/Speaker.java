@@ -76,6 +76,11 @@ public class Speaker {
     }
 
     public static String generateIdFromEmail(String email) {
+        if(email == null || email.equals("") || (!email.contains("@"))) {
+            System.out.println("Invalid email: " + email);
+            return "";
+        }
+
         String speakerEmail = email.trim().toLowerCase();
         return speakerEmail.substring(0, speakerEmail.indexOf("@")).replace(".", "_");
     }
