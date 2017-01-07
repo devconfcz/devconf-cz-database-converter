@@ -62,7 +62,7 @@ public class SessionsDetailsReaderImpl implements SessionsDetailsReader {
                 Speaker speaker = speakers.get(Speaker.generateIdFromEmail(speakerEmail));
                 // Ignore session when speakers does not exists
                 if (speaker == null) {
-                    System.out.println(session.getId() + " - " + speakerEmail.trim());
+                    System.out.println("Session with speaker not in speakers tab - Session: " + session.getId() + " - Speakers: " + speakerEmail.trim());
                     continue;
                 }
 
