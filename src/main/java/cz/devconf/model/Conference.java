@@ -5,11 +5,20 @@ import java.util.Map;
 
 public class Conference {
 
+    private CheckAccess checkAccess;
     private Map<String, String> admins;
     private List<Room> rooms;
     private List<Track> tracks;
     private Map<String, Speaker> speakers;
     private Map<String, Session> sessions;
+
+    public CheckAccess getCheckAccess() {
+        return checkAccess;
+    }
+
+    public void setCheckAccess(CheckAccess checkAccess) {
+        this.checkAccess = checkAccess;
+    }
 
     public Map<String, String> getAdmins() {
         return admins;

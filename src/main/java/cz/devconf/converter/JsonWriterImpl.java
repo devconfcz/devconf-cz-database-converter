@@ -31,6 +31,7 @@ public class JsonWriterImpl implements JsonWriter {
         admins.put("yhxRsebxBlfDXUVZhfjjUFe8wXz2", "daniel@passos.me");
 
         Conference conference = new Conference();
+        conference.setCheckAccess(new CheckAccess("dummy"));
         conference.setAdmins(admins);
         conference.setTracks(tracks());
         conference.setRooms(rooms());
