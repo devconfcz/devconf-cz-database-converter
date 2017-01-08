@@ -64,8 +64,6 @@ public class JsonWriterImpl implements JsonWriter {
     private List<Track> tracks() {
         List<Track> tracks = new ArrayList<Track>();
 
-        tracks.add(new Track("Keynote", "#05050a"));
-        tracks.add(new Track("Lightning", "#000000"));
         tracks.add(new Track(".Net", "#6b7275"));
         tracks.add(new Track("Agile", "#00c853"));
         tracks.add(new Track("Cloud", "#448aff"));
@@ -74,11 +72,16 @@ public class JsonWriterImpl implements JsonWriter {
         tracks.add(new Track("Desktop", "#9b0101"));
         tracks.add(new Track("DevOps", "#01579b"));
         tracks.add(new Track("DevTools", "#0f9977"));
+        tracks.add(new Track("Discussion, Agile", "#000000"));
         tracks.add(new Track("Fedora", "#3c6eb4"));
         tracks.add(new Track("Hackfest", "#b3e5fc"));
+        tracks.add(new Track("Hackfests", "#b3e5fc"));
         tracks.add(new Track("JUDCon", "#007e8d"));
+        tracks.add(new Track("Keynote", "#05050a"));
+        tracks.add(new Track("Lightning", "#000000"));
         tracks.add(new Track("Linux", "#009688"));
         tracks.add(new Track("Meetup", "#d57800"));
+        tracks.add(new Track("Meetups", "#000000"));
         tracks.add(new Track("Microservices", "#f57f17"));
         tracks.add(new Track("Networking", "#b52b00"));
         tracks.add(new Track("OpenShift", "#2e7d32"));
