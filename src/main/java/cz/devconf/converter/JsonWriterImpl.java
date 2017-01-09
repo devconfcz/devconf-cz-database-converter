@@ -72,13 +72,13 @@ public class JsonWriterImpl implements JsonWriter {
         tracks.add(new Track("Desktop", "#9b0101"));
         tracks.add(new Track("DevOps", "#0155e6"));
         tracks.add(new Track("DevTools", "#0f9977"));
-        tracks.add(new Track("Discussion, Agile", "#000000"));
+        tracks.add(new Track("Discussion, Agile", "#004153"));
         tracks.add(new Track("Fedora", "#2e5a98"));
         tracks.add(new Track("Hackfest", "#5a6c2a"));
         tracks.add(new Track("Hackfests", "#5a6c2a"));
         tracks.add(new Track("JUDCon", "#007e8d"));
         tracks.add(new Track("Keynote", "#000000"));
-        tracks.add(new Track("Lightning", "#000000"));
+        tracks.add(new Track("Lightning", "#391288"));
         tracks.add(new Track("Linux", "#e30a0a"));
         tracks.add(new Track("Meetup", "#d57800"));
         tracks.add(new Track("Meetups", "#d57800"));
