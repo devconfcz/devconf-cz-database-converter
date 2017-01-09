@@ -64,31 +64,31 @@ public class JsonWriterImpl implements JsonWriter {
     private List<Track> tracks() {
         List<Track> tracks = new ArrayList<Track>();
 
-        tracks.add(new Track(".Net", "#6b7275"));
+        tracks.add(new Track(".Net", "#577684"));
         tracks.add(new Track("Agile", "#00c853"));
         tracks.add(new Track("Cloud", "#448aff"));
         tracks.add(new Track("Config Mgmt", "#990f8e"));
         tracks.add(new Track("Containers", "#5e35b1"));
         tracks.add(new Track("Desktop", "#9b0101"));
-        tracks.add(new Track("DevOps", "#01579b"));
+        tracks.add(new Track("DevOps", "#0155e6"));
         tracks.add(new Track("DevTools", "#0f9977"));
         tracks.add(new Track("Discussion, Agile", "#000000"));
-        tracks.add(new Track("Fedora", "#3c6eb4"));
-        tracks.add(new Track("Hackfest", "#b3e5fc"));
-        tracks.add(new Track("Hackfests", "#b3e5fc"));
+        tracks.add(new Track("Fedora", "#2e5a98"));
+        tracks.add(new Track("Hackfest", "#5a6c2a"));
+        tracks.add(new Track("Hackfests", "#5a6c2a"));
         tracks.add(new Track("JUDCon", "#007e8d"));
-        tracks.add(new Track("Keynote", "#05050a"));
+        tracks.add(new Track("Keynote", "#000000"));
         tracks.add(new Track("Lightning", "#000000"));
-        tracks.add(new Track("Linux", "#009688"));
+        tracks.add(new Track("Linux", "#e30a0a"));
         tracks.add(new Track("Meetup", "#d57800"));
-        tracks.add(new Track("Meetups", "#000000"));
+        tracks.add(new Track("Meetups", "#d57800"));
         tracks.add(new Track("Microservices", "#f57f17"));
-        tracks.add(new Track("Networking", "#b52b00"));
+        tracks.add(new Track("Networking", "#b40f0f"));
         tracks.add(new Track("OpenShift", "#2e7d32"));
         tracks.add(new Track("OpenStack", "#757575"));
         tracks.add(new Track("Security", "#008ccb"));
         tracks.add(new Track("Storage", "#6d4c41"));
-        tracks.add(new Track("Testing", "#006064"));
+        tracks.add(new Track("Testing", "#995c0c"));
         tracks.add(new Track("Virtualization", "#01579b"));
 
         return tracks;
