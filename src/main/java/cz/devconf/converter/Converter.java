@@ -20,23 +20,23 @@ public final class Converter {
         Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(in);
 
         // [0] name
-        // [1] country
-        // [2] bio
-        // [3] org
-        // [4] size
-        // [5] email
+        // [1] email
+        // [2] country
+        // [3] bio
+        // [4] org
+        // [5] size
         // [6] avatar
         // [7] twitter
 
         for (CSVRecord record : records) {
             Speaker speaker = new Speaker();
-            speaker.setId(Speaker.generateIdFromEmail(record.get(5)));
+            speaker.setId(Speaker.generateIdFromEmail(record.get(1)));
             speaker.setName(record.get(0));
-            speaker.setEmail(record.get(5).toLowerCase());
-            speaker.setCountry(record.get(1));
+            speaker.setEmail(record.get(1).toLowerCase());
+            speaker.setCountry(record.get(2));
             speaker.setAvatar(record.get(6));
-            speaker.setOrganization(record.get(3));
-            speaker.setBio(record.get(2));
+            speaker.setOrganization(record.get(4));
+            speaker.setBio(record.get(3));
             speaker.setTwitter(record.get(7));
 
             speakers.put(speaker.getId(), speaker);
