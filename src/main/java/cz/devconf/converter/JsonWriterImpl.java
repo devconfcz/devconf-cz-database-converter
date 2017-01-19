@@ -46,8 +46,8 @@ public class JsonWriterImpl implements JsonWriter {
     private List<Room> rooms() {
         List<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room("D105", "Talk"));
-        rooms.add(new Room("D206", "Talk"));
-        rooms.add(new Room("D207", "Talk"));
+        rooms.add(new Room("D0206", "Talk"));
+        rooms.add(new Room("D0207", "Talk"));
         rooms.add(new Room("C228", "Talk"));
         rooms.add(new Room("E104", "Talk"));
         rooms.add(new Room("E105", "Talk"));
