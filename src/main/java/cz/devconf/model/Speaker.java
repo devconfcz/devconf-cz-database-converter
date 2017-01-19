@@ -82,7 +82,7 @@ public class Speaker {
         }
 
         String speakerEmail = email.trim().toLowerCase();
-        return speakerEmail.substring(0, speakerEmail.indexOf("@")).replace(".", "_");
+        return speakerEmail.replace(".", "_").replace("@", "_");
     }
 
     @Override
